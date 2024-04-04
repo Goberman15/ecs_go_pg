@@ -50,7 +50,7 @@ func (s *server) getHandler(w http.ResponseWriter, r *http.Request) {
 func main() {
 	godotenv.Load()
 
-	dsn := fmt.Sprintf("%s:%s@%s/%s:%s?%s",
+	dsn := fmt.Sprintf("postgres://%s:%s@%s/%s:%s?%s",
 		os.Getenv("DB_USER"),
 		os.Getenv("DB_PASS"),
 		os.Getenv("DB_HOST"),
