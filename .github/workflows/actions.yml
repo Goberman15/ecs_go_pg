@@ -12,7 +12,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      
+
       - name: Create .PEM File
         run: wget https://truststore.pki.rds.amazonaws.com/ap-southeast-1/ap-southeast-1-bundle.pem
 
@@ -40,10 +40,39 @@ jobs:
           docker build -t $REGISTRY/$REPO:$TAG .
           docker push $REGISTRY/$REPO:$TAG
 
-      # - name: Run Terraform
-      #   env:
-      #     TAG: ${{ steps.build-tag-push.outputs.container_url }}
-      #   run: |
-      #     terraform init
-      #     terraform apply --auto-approve
-        
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.7.5"
+
+      - name: Setup AWS Credentials for TF Backend
+        run: |
+          echo "AWS_ACCESS_KEY_ID=${{ secrets.TF_BACKEND_AWS_AK_ID }}" >> $GITHUB_ENV
+          echo "AWS_SECRET_ACCESS_KEY=${{ secrets.TF_BACKEND_AWS_AK_SECRET }}" >> $GITHUB_ENV
+
+      - name: Build Var File
+        run: |
+          cd infra
+          touch var.tfvars
+          echo "sg_id=${{ vars.SG_ID }}\n >> var.tfvars
+          echo "subnet_ids=${{ vars.SUBNET_IDS }}\n" >> var.tfvars
+          echo "docker_image_url=${{ steps.build-tag-push.outputs.container_url }}\n" >> var.tfvars
+          echo "db_host=${{ vars.DB_HOST }}\n" >> var.tfvars
+          echo "db_user=${{ secrets.DB_USER }}\n" >> var.tfvars
+          echo "db_pass=${{ secrets.DB_PASS }}\n" >> var.tfvars
+          echo "db_port=${{ vars.DB_PORT }}\n" >> var.tfvars
+          echo "db_name=${{ vars.DB_NAME }}\n" >> var.tfvars
+          echo "db_params=${{ vars.DB_PARAMS }}\n" >> var.tfvars
+          echo "ecs_ak_id=${{ secrets.AWS_AK_ID }}\n" >> var.tfvars
+          echo "ecs_ak_secret=${{ secrets.AWS_AK_SECRET }}\n" >> var.tfvars
+          echo "ecs_exec_role_arn=${{ vars.ECS_EXEC_ROLE_ARN }}\n" >> var.tfvars
+
+          cat var.tfvars
+
+      - name: Run Terraform
+        env:
+          TAG: ${{ steps.build-tag-push.outputs.container_url }}
+        run: |
+          cd infra
+          terraform init
+          terraform apply -var-file=var.tfvars --auto-approve
