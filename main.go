@@ -50,7 +50,7 @@ func (s *server) getHandler(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 	err := godotenv.Load()
-	if err !=nil {
+	if err != nil {
 		log.Fatal(err)
 	}
 
@@ -73,5 +73,5 @@ func main() {
 
 	mux := http.NewServeMux()
 	mux.HandleFunc("GET /test/", s.getHandler)
-	http.ListenAndServe(":8088", mux)
+	log.Fatal(http.ListenAndServe(":8088", mux))
 }
