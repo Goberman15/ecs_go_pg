@@ -12,6 +12,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      
+      - name: Create .PEM File
+        run: wget https://truststore.pki.rds.amazonaws.com/ap-southeast-1/ap-southeast-1-bundle.pem
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
@@ -27,10 +30,20 @@ jobs:
           registry-type: private
 
       - name: Build, Tag, & Push Docker Image to ECR
+        id: build-tag-push
         env:
           REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           REPO: ecs_go_pg
           TAG: ${{ github.sha }}
         run: |
+          echo "container_url=$(echo $REGISTRY)/$(echo $REPO):$(echo $TAG)" >> $GITHUB_ENV
           docker build -t $REGISTRY/$REPO:$TAG .
           docker push $REGISTRY/$REPO:$TAG
+
+      # - name: Run Terraform
+      #   env:
+      #     TAG: ${{ steps.build-tag-push.outputs.container_url }}
+      #   run: |
+      #     terraform init
+      #     terraform apply --auto-approve
+        
