@@ -45,20 +45,17 @@ func (s *server) getHandler(w http.ResponseWriter, r *http.Request) {
 
 	w.WriteHeader(200)
 	w.Header().Add("Content-Type", "application/json")
-	return
 }
 
 func main() {
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatal(err)
-	}
+	godotenv.Load()
 
-	dsn := fmt.Sprintf("%s:%s@%s/%s?sslmode=disable",
+	dsn := fmt.Sprintf("%s:%s@%s/%s?%s",
 		os.Getenv("DB_USER"),
 		os.Getenv("DB_PASS"),
 		os.Getenv("DB_HOST"),
 		os.Getenv("DB_NAME"),
+		os.Getenv("DB_PARAMS"),
 	)
 
 	db, err := sqlx.Connect("pgx", dsn)
