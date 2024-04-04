@@ -32,5 +32,5 @@ jobs:
           REPO: ecs_go_pg
           TAG: ${{ github.sha }}
         run: |
-          docker build -t $REGISTRY/$REPOSITORY:$TAG .
-          docker push $REGISTRY/$REPOSITORY:$TAG
+          docker build -t $REGISTRY/$REPO:$TAG .
+          docker push $REGISTRY/$REPO:$TAG
