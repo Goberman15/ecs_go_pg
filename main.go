@@ -59,8 +59,11 @@ func main() {
 		os.Getenv("DB_PARAMS"),
 	)
 
+	fmt.Println("dsn =>", dsn)
+
 	db, err := sqlx.Connect("pgx", dsn)
 	if err != nil {
+		fmt.Println("Fatal: Fail to Connect to DB")
 		log.Fatal(err)
 	}
 	defer db.Close()
