@@ -14,7 +14,7 @@ WORKDIR /root/
 
 COPY --from=builder /app/main .
 
-COPY ap-southeast-1-bundle.pem .
+COPY ./ap-southeast-1-bundle.pem .
 
 EXPOSE 8088
 
