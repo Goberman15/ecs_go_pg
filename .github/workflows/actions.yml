@@ -54,7 +54,7 @@ jobs:
         run: |
           cd infra
           touch var.tfvars
-          echo "sg_id="${{ vars.SG_ID }}"\n >> var.tfvars
+          echo "sg_id="${{ vars.SG_ID }}\n" >> var.tfvars
           echo "subnet_ids=${{ vars.SUBNET_IDS }}\n" >> var.tfvars
           echo "docker_image_url=${{ steps.build-tag-push.outputs.container_url }}\n" >> var.tfvars
           echo "db_host=${{ vars.DB_HOST }}\n" >> var.tfvars
