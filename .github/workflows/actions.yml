@@ -40,6 +40,10 @@ jobs:
           docker build -t $REGISTRY/$REPO:$TAG .
           docker push $REGISTRY/$REPO:$TAG
 
+      - name: Build DB Connection String
+        run: |
+          echo "conn_string=postgres://${{ secrets.DB_USER }}:${{ secrets.DB_PASS}}@${{ vars.DB_HOST }}:${{ vars.DB_PORT }}/${{ vars.DB_NAME }}?${{ vars.DB_PARAMS }}" >> $GITHUB_ENV
+
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
         with:
