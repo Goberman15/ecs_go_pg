@@ -52,7 +52,7 @@ jobs:
 
       - name: Migrate DB
         run: |
-          go install github.com/golang-migrate/migrate
+          go install -tags 'postgres' github.com/golang-migrate/migrate/v4/cmd/migrate@latest
           migrate -database $(echo $CONN_STRING) -path db/migrations up
 
       - name: Setup Terraform
