@@ -42,7 +42,8 @@ jobs:
 
       - name: Build DB Connection String
         run: |
-          echo "conn_string=postgres://${{ secrets.DB_USER }}:${{ secrets.DB_PASS}}@${{ vars.DB_HOST }}:${{ vars.DB_PORT }}/${{ vars.DB_NAME }}?${{ vars.DB_PARAMS }}" >> $GITHUB_ENV
+          echo "CONN_STRING=postgres://${{ secrets.DB_USER }}:${{ secrets.DB_PASS}}@${{ vars.DB_HOST }}:${{ vars.DB_PORT }}/${{ vars.DB_NAME }}?${{ vars.DB_PARAMS }}" >> $GITHUB_ENV
+          echo $CONN_STRING
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
