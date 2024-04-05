@@ -54,16 +54,16 @@ jobs:
         run: |
           cd infra
           touch var.tfvars
-          echo "sg_id=${{ vars.SG_ID }}" >> var.tfvars
-          echo "subnet_ids=${{ vars.SUBNET_IDS }}" >> var.tfvars
+          echo "sg_id=\"${{ vars.SG_ID }}\"" >> var.tfvars
+          echo "subnet_ids=\"${{ vars.SUBNET_IDS }}\"" >> var.tfvars
           echo "docker_image_url=\"$(echo $container_url)\"" >> var.tfvars
-          echo "db_host=${{ vars.DB_HOST }}" >> var.tfvars
-          echo "db_user=${{ secrets.DB_USER }}" >> var.tfvars
-          echo "db_pass=${{ secrets.DB_PASS }}" >> var.tfvars
-          echo "db_port=${{ vars.DB_PORT }}" >> var.tfvars
-          echo "db_name=${{ vars.DB_NAME }}" >> var.tfvars
+          echo "db_host=\"${{ vars.DB_HOST }}\"" >> var.tfvars
+          echo "db_user=\"${{ secrets.DB_USER }}\"" >> var.tfvars
+          echo "db_pass=\"${{ secrets.DB_PASS }}\"" >> var.tfvars
+          echo "db_port=\"${{ vars.DB_PORT }}\"" >> var.tfvars
+          echo "db_name=\"${{ vars.DB_NAME }}\"" >> var.tfvars
           echo "db_params=\"${{ vars.DB_PARAMS }}\"" >> var.tfvars
-          echo "ecs_ak_id=${{ secrets.AWS_AK_ID }}" >> var.tfvars
+          echo "ecs_ak_id=\"${{ secrets.AWS_AK_ID }}\"" >> var.tfvars
           echo "ecs_ak_secret=\"${{ secrets.AWS_AK_SECRET }}\"" >> var.tfvars
           echo "ecs_exec_role_arn=\"${{ vars.ECS_EXEC_ROLE_ARN }}\"" >> var.tfvars
 
