@@ -55,7 +55,7 @@ jobs:
           cd infra
           touch var.tfvars
           echo "sg_id=\"${{ vars.SG_ID }}\"" >> var.tfvars
-          echo "subnet_ids=\"${{ vars.SUBNET_IDS }}\"" >> var.tfvars
+          echo "subnet_ids=${{ vars.SUBNET_IDS }}" >> var.tfvars
           echo "docker_image_url=\"$(echo $container_url)\"" >> var.tfvars
           echo "db_host=\"${{ vars.DB_HOST }}\"" >> var.tfvars
           echo "db_user=\"${{ secrets.DB_USER }}\"" >> var.tfvars
